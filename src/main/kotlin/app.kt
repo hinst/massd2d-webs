@@ -20,6 +20,7 @@ class App(val webPath: String = "/massd2d", val configFileName: String = "config
     private val db = DB(config.getProperty("database"))
 
     fun run() {
+        db.start()
         val server = embeddedServer(Netty, 9001) {
             routing {
                 get(webPath + "/") { respondPage(call,"hello") }
