@@ -9,8 +9,6 @@ import org.jetbrains.ktor.netty.Netty
 import org.jetbrains.ktor.response.respondText
 import org.jetbrains.ktor.routing.get
 import org.jetbrains.ktor.routing.routing
-import java.nio.file.Files
-import java.nio.file.Paths
 
 class App(val webPath: String = "/massd2d") {
     fun run() {
@@ -30,10 +28,10 @@ class App(val webPath: String = "/massd2d") {
     }
 
     private fun getPage(filePath: String): String {
-        val template = loadFileString("src-web/main.html")
-        val content = loadFileString("src-page/" + filePath)
+        val template = loadFileString(appMainPath + "/src-web/main.html")
+        val content = loadFileString(appMainPath + "/src-page/" + filePath)
         val text = template.replace("%content%", content)
-                .replace("%webPath%", webPath)
+            .replace("%webPath%", webPath)
         return text
     }
 
