@@ -12,7 +12,7 @@ import org.jetbrains.ktor.routing.routing
 
 class App(val webPath: String = "/massd2d") {
     fun run() {
-        val server = embeddedServer(Netty, 8080) {
+        val server = embeddedServer(Netty, 9001) {
             routing {
                 get(webPath + "/") { respondPage(call,"hello") }
                 get(webPath + "/commitHistory") { }
