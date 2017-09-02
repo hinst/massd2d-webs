@@ -9,8 +9,16 @@ import org.jetbrains.ktor.netty.Netty
 import org.jetbrains.ktor.response.respondText
 import org.jetbrains.ktor.routing.get
 import org.jetbrains.ktor.routing.routing
+import java.io.FileInputStream
+import java.util.*
 
-class App(val webPath: String = "/massd2d") {
+class App(val webPath: String = "/massd2d", val configFileName: String = "config-desktop.properties") {
+    private val config = Properties()
+    init {
+        config.load(FileInputStream(appMainPath + "/" + configFileName))
+    }
+    private val db = DB(config.getProperty("database"))
+
     fun run() {
         val server = embeddedServer(Netty, 9001) {
             routing {
