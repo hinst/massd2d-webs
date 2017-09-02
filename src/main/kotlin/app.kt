@@ -7,12 +7,15 @@ import org.jetbrains.ktor.response.respondText
 import org.jetbrains.ktor.routing.get
 import org.jetbrains.ktor.routing.routing
 
-class App {
+class App(val webPath: String = "/massd2d") {
     fun run() {
         val server = embeddedServer(Netty, 8080) {
             routing {
                 get("/") {
-                    call.respondText("Page not found", ContentType.Text.Plain)
+                    call.respondText("URL outside root", ContentType.Text.Plain)
+                }
+                get(webPath + "/") {
+                    call.respondText("URL outside root", ContentType.Text.Plain)
                 }
             }
         }
