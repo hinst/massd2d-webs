@@ -15,11 +15,12 @@ import java.io.File
 import java.io.FileInputStream
 import java.util.*
 
-class App(val webPath: String = "/massd2d", val configFileName: String = "config-desktop.properties") {
+class App(val configFileName: String = "config-desktop.properties") {
     private val config = Properties()
     init {
         config.load(FileInputStream(appMainPath + "/" + configFileName))
     }
+    val webPath = config.getProperty("webPath")
     private val db = DB(config.getProperty("database"))
 
     fun run() {

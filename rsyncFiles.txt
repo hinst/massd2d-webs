@@ -6,3 +6,4 @@ src-template
 src-js
 run.sh
 assuming-control.sh
+config-orange.properties
