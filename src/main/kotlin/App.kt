@@ -33,6 +33,9 @@ class App(val webPath: String = "/massd2d", val configFileName: String = "config
                 static(webPath + "/src-js") {
                     files(appMainPath + "/src-js")
                 }
+                static(webPath + "/src-style") {
+                    files(appMainPath + "/src-style")
+                }
                 get("/") {
                     call.respondText("URL outside root", ContentType.Text.Plain)
                 }

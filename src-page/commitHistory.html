@@ -1,4 +1,10 @@
-Наборы изменений в репозитории massd2d
+<button id="massd2d_webs_commitHistoryRefreshButton" class="w3-btn w3-black">Обновить</button>
+<span style="margin-left: 8px"> </span>
+Наборы изменений в репозитории massd2d 
 <script id="massd2d_webs_commitHistoryRowTemplate" type="text">%commitHistoryRowTemplate.html%</script>
-<table id="massd2d_webs_commitHistoryTable"></table>
+<div style="border-bottom: 1px solid #eee"></div>
+<div id="massd2d_webs_commitHistoryTableLoading">
+    %spinner.html%
+</div>
+<table id="massd2d_webs_commitHistoryTable" style="border-collapse: collapse; width: 100%"></table>
 <script type="text/javascript" src="%webPath%/src-js/commitHistory.js"></script>
