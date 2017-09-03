@@ -24,10 +24,13 @@ class App(val webPath: String = "/massd2d", val configFileName: String = "config
         val server = embeddedServer(Netty, 9001) {
             routing {
                 get(webPath + "/") { respondPage(call,"hello") }
-                get(webPath + "/commitHistoryPage") { }
+                get(webPath + "/commitHistoryPage") { respondPage(call, "commitHistory") }
                 get(webPath + "/commitHistory") { call.respondText(getCommitHistory(), ContentType.Application.Json) }
                 static(webPath + "/web-3rd") {
-                    files("web-3rd")
+                    files(appMainPath + "/web-3rd")
+                }
+                static(webPath + "/src-js") {
+                    files(appMainPath + "/src-js")
                 }
                 get("/") {
                     call.respondText("URL outside root", ContentType.Text.Plain)
@@ -40,6 +43,7 @@ class App(val webPath: String = "/massd2d", val configFileName: String = "config
     private fun getPage(filePath: String): String {
         val template = loadFileString(appMainPath + "/src-web/main.html")
         val content = loadFileString(appMainPath + "/src-page/" + filePath)
+            .replace("%webPath%", webPath)
         val text = template.replace("%content%", content)
             .replace("%webPath%", webPath)
         return text
