@@ -24,7 +24,7 @@ class App(val webPath: String = "/massd2d", val configFileName: String = "config
         val server = embeddedServer(Netty, 9001) {
             routing {
                 get(webPath + "/") { respondPage(call,"hello") }
-                get(webPath + "/commitHistory") { }
+                get(webPath + "/commitHistoryPage") { }
                 static(webPath + "/web-3rd") {
                     files("web-3rd")
                 }
