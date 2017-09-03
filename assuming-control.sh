@@ -7,27 +7,12 @@ echo $path
 
 if [ "$1" = "start" ]
 then
-	pid=$(pidof "$path")
-	if [[ $? == 0 ]]
-	then
-		echo probably already running $path
-	else
-		nohup $path 2>>error-log.txt 1>>output-log.txt &
-	fi
+    echo "Starting... $(date)" >>output-log.txt
+    echo "Starting... $(date)" >>error-log.txt
+	nohup $path 2>>error-log.txt 1>>output-log.txt &
 fi
 
 if [ "$1" == "stop" ]
 then
-	pid=$(pidof "$path")
-	if [[ $? == 0 ]]
-	then
-		kill -s SIGINT $pid
-		while kill -s 0 $pid
-		do
-			sleep 1
-		done
-		echo stopped
-	else
-		echo probably not running $path
-	fi
+    pkill -f -x "$path"
 fi

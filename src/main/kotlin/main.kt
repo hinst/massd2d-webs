@@ -6,7 +6,6 @@ class Main
 
 fun main(args: Array<String>) {
     println("STARTING... appMainPath=" + appMainPath)
-    println(args.size)
     val app = if (args.size > 0) App(configFileName = args[0]) else App()
     app.run()
     Unirest.shutdown()
