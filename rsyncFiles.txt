@@ -3,3 +3,5 @@ src-page
 src-web
 web-3rd
 run.sh
+src-template
+src-js
