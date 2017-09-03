@@ -1,6 +1,5 @@
 package hinst.massd2d.webs
 
-import com.mashape.unirest.http.Unirest
 import org.jetbrains.ktor.application.ApplicationCall
 import org.jetbrains.ktor.content.files
 import org.jetbrains.ktor.content.static
@@ -55,6 +54,6 @@ class App(val webPath: String = "/massd2d", val configFileName: String = "config
 
     private fun getCommitHistory(): String {
         val commitHistory = CommitHistory("hinst", bitBucketPassword, "massd2d")
-        return commitHistory.data
+        return commitHistory.text
     }
 }
