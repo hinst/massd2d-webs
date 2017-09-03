@@ -1,5 +1,6 @@
 package hinst.massd2d.webs
 
+import com.mashape.unirest.http.Unirest
 import org.jetbrains.ktor.application.ApplicationCall
 import org.jetbrains.ktor.content.files
 import org.jetbrains.ktor.content.static
@@ -25,6 +26,7 @@ class App(val webPath: String = "/massd2d", val configFileName: String = "config
             routing {
                 get(webPath + "/") { respondPage(call,"hello") }
                 get(webPath + "/commitHistoryPage") { }
+                get(webPath + "/commitHistory") { call.respondText(getCommitHistory(), ContentType.Application.Json) }
                 static(webPath + "/web-3rd") {
                     files("web-3rd")
                 }
@@ -46,5 +48,13 @@ class App(val webPath: String = "/massd2d", val configFileName: String = "config
 
     private suspend fun respondPage(call: ApplicationCall, pageName: String) {
         call.respondText(getPage(pageName + ".html"), ContentType.Text.Html)
+    }
+
+    val bitBucketPassword
+        get() = loadFileString(appMainPath + "/secret/hinst_bbp")
+
+    private fun getCommitHistory(): String {
+        val commitHistory = CommitHistory("hinst", bitBucketPassword, "massd2d")
+        return commitHistory.data
     }
 }
