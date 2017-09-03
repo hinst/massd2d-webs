@@ -1,8 +1,10 @@
 package hinst.massd2d.webs
 
 import org.jetbrains.ktor.application.ApplicationCall
+import org.jetbrains.ktor.application.install
 import org.jetbrains.ktor.content.files
 import org.jetbrains.ktor.content.static
+import org.jetbrains.ktor.features.ConditionalHeaders
 import org.jetbrains.ktor.host.embeddedServer
 import org.jetbrains.ktor.http.ContentType
 import org.jetbrains.ktor.netty.Netty
@@ -23,6 +25,7 @@ class App(val webPath: String = "/massd2d", val configFileName: String = "config
     fun run() {
         db.start()
         val server = embeddedServer(Netty, 9001) {
+            install(ConditionalHeaders)
             routing {
                 get(webPath + "/") { respondPage(call,"hello") }
                 get(webPath + "/commitHistoryPage") { respondPage(call, "commitHistory") }
