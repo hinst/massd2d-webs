@@ -9,6 +9,7 @@ import org.jetbrains.ktor.netty.Netty
 import org.jetbrains.ktor.response.respondText
 import org.jetbrains.ktor.routing.get
 import org.jetbrains.ktor.routing.routing
+import java.io.File
 import java.io.FileInputStream
 import java.util.*
 
@@ -43,9 +44,7 @@ class App(val webPath: String = "/massd2d", val configFileName: String = "config
     private fun getPage(filePath: String): String {
         val template = loadFileString(appMainPath + "/src-web/main.html")
         val content = loadFileString(appMainPath + "/src-page/" + filePath)
-            .replace("%webPath%", webPath)
-        val text = template.replace("%content%", content)
-            .replace("%webPath%", webPath)
+        val text = replacePageVars(template.replace("%content%", content))
         return text
     }
 
@@ -59,5 +58,16 @@ class App(val webPath: String = "/massd2d", val configFileName: String = "config
     private fun getCommitHistory(): String {
         val commitHistory = CommitHistory("hinst", bitBucketPassword, "massd2d")
         return commitHistory.text
+    }
+
+    private fun replacePageVars(source: String): String {
+        var text = source.replace("%webPath%", webPath)
+        val templates = File(appMainPath + "/src-template").listFiles();
+        templates.forEach { template -> run {
+            val key = "%" + template.name + "%"
+            if (text.indexOf(key) >= 0)
+                text = text.replace(key, loadFileString(template.absolutePath))
+        }}
+        return text
     }
 }

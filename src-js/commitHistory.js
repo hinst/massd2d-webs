@@ -1,10 +1,11 @@
 function massd2d_webs_displayCommitHistory(data) {
-    var table = document.getElementById("massd2d_webs_commitHistoryTable");    
+    var table = document.getElementById("massd2d_webs_commitHistoryTable");
+    var rowTemplate = document.getElementById("massd2d_webs_commitHistoryRowTemplate").innerHTML;
     table.innerHTML = "";
     console.log(data.length);
-    console.log(massd2d_webs_commitHistoryRowTemplate);
+    console.log(rowTemplate);
     for (var i = 0; i < data.length; ++i) {
-        table.innerHTML += massd2d_webs_commitHistoryRowTemplate
+        table.innerHTML += rowTemplate
             .replace(/\$moment/, data[i].moment)
             .replace(/\$message/, data[i].message);
     }
