@@ -2,6 +2,7 @@ build/install/massd2d-webs/lib
 src-page
 src-web
 web-3rd
-run.sh
 src-template
 src-js
+run.sh
+assuming-control.sh
