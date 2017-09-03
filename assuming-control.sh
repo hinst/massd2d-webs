@@ -7,8 +7,8 @@ echo $path
 
 if [ "$1" = "start" ]
 then
-    echo "Starting... $(date)" >>output-log.txt
-    echo "Starting... $(date)" >>error-log.txt
+    echo "LauncherStarting... $(date)" >>output-log.txt
+    echo "LauncherStarting... $(date)" >>error-log.txt
 	nohup $path 2>>error-log.txt 1>>output-log.txt &
 fi
 
