@@ -59,12 +59,13 @@ class App(val configFileName: String = "config-desktop.properties") {
         call.respondText(getPage(pageName + ".html"), ContentType.Text.Html)
     }
 
-    val bitBucketPassword
+    private val bitBucketPassword
         get() = loadFileString(appMainPath + "/secret/hinst_bbp")
 
     private fun getCommitHistory(): String {
-        val commitHistory = CommitHistory("hinst", bitBucketPassword, "massd2d")
-        return commitHistory.text
+        val items = CommitHistory.loadFromBitbucket("hinst", bitBucketPassword, "massd2d")
+        val text = CommitHistory.renderJson(items)
+        return text
     }
 
     private fun replacePageVars(source: String): String {
