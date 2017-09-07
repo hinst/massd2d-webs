@@ -15,9 +15,7 @@ class DB(val url: String) {
     fun start() {
         getConnection().use {
             it.autoCommit = false
-            it.createStatement().use {
-                it.execute(CommitHistoryDB.Statements.createTable)
-            }
+            commitHistory.start(it)
             it.commit()
         }
     }
