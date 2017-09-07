@@ -50,7 +50,7 @@ class CommitHistoryDB(val db: DB) {
             val updateStatement = "UPDATE $tableName SET moment=?, content=? where id=?"
             //                                                  1          2          3
             it.prepareStatement(updateStatement).use {
-                it.setDate(1, java.sql.Date(row.moment.time))
+                it.setTimestamp(1, java.sql.Timestamp(row.moment.time))
                 it.setString(2, row.content)
                 it.setString(3, row.id)
                 it.execute()

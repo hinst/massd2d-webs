@@ -22,9 +22,13 @@ class App(val configFileName: String = "config-desktop.properties") {
     }
     val webPath = config.getProperty("webPath")
     private val db = DB(config.getProperty("database"))
+    private val bitBucketPassword
+        get() = loadFileString(appMainPath + "/secret/hinst_bbp")
+    private val commitHistoryMan = CommitHistoryMan(db = db, userName = "hinst", userPassword = bitBucketPassword, repoSlug = "massd2d")
 
     fun run() {
         db.start()
+        commitHistoryMan.start()
         val server = embeddedServer(Netty, 9001) {
             install(ConditionalHeaders)
             routing {
@@ -58,9 +62,6 @@ class App(val configFileName: String = "config-desktop.properties") {
     private suspend fun respondPage(call: ApplicationCall, pageName: String) {
         call.respondText(getPage(pageName + ".html"), ContentType.Text.Html)
     }
-
-    private val bitBucketPassword
-        get() = loadFileString(appMainPath + "/secret/hinst_bbp")
 
     private fun getCommitHistory(): String {
         val items = CommitHistory.loadFromBitbucket("hinst", bitBucketPassword, "massd2d")

@@ -9,14 +9,15 @@ class CommitHistoryMan(
     val userPassword: String,
     val repoSlug: String
 ) {
+    val log = org.slf4j.LoggerFactory.getLogger(this.javaClass)
     companion object {
-        const val initialUpdateInterval: Long = 30 * 1000;
-        const val updateInterval: Long = 12 * 60 * 60 * 1000;
-
+        const val initialUpdateInterval: Long = 30 * 1000
+        const val updateInterval: Long = 12 * 60 * 60 * 1000
     }
 
     fun start() {
         Timer().schedule(UpdaterTask(), initialUpdateInterval, updateInterval)
+        log.debug("start")
     }
 
     fun load(): String {
@@ -26,9 +27,11 @@ class CommitHistoryMan(
     }
 
     fun update() {
+        log.debug("update")
         val text = load()
         val row = CommitHistoryDB.Row(rowId, Date(), text)
         db.commitHistory.put(row)
+        log.debug("update->")
     }
 
     inner class UpdaterTask() : TimerTask() {
