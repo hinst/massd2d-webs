@@ -8,6 +8,7 @@ import org.jetbrains.ktor.features.ConditionalHeaders
 import org.jetbrains.ktor.host.embeddedServer
 import org.jetbrains.ktor.http.ContentType
 import org.jetbrains.ktor.netty.Netty
+import org.jetbrains.ktor.pipeline.PipelinePhase
 import org.jetbrains.ktor.response.respondText
 import org.jetbrains.ktor.routing.get
 import org.jetbrains.ktor.routing.routing
@@ -36,7 +37,7 @@ class App(val configFileName: String = "config-desktop.properties") {
         val server = embeddedServer(Netty, 9001) {
             install(ConditionalHeaders)
             routing {
-                get(webPath + "/") { respondPage(call,"hello") }
+                get(webPath + "/") { respondPage(call, "hello") }
                 get(webPath + "/commitHistoryPage") { respondPage(call, "commitHistory") }
                 get(webPath + "/commitHistory") { call.respondText(getCommitHistory(), ContentType.Application.Json) }
                 fun setFiles(folder: String) {
