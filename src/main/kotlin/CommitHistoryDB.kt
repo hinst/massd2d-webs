@@ -2,14 +2,12 @@ package hinst.massd2d.webs
 
 import java.sql.ResultSet
 import java.time.Instant
-import java.time.OffsetDateTime
-import java.util.*
 
 class CommitHistoryDB(val db: DB) {
-    data class Row(val id: String, val moment: Date, val content: String) {
+    data class Row(val id: String, val moment: Instant, val content: String) {
         constructor(row: ResultSet) : this(
             id = row.getString("id"),
-            moment = row.getDate("moment"),
+            moment = row.getTimestamp("moment").toInstant(),
             content = row.getString("content"))
     }
 
@@ -50,7 +48,7 @@ class CommitHistoryDB(val db: DB) {
             val updateStatement = "UPDATE $tableName SET moment=?, content=? where id=?"
             //                                                  1          2          3
             it.prepareStatement(updateStatement).use {
-                it.setTimestamp(1, java.sql.Timestamp(row.moment.time))
+                it.setTimestamp(1, java.sql.Timestamp(row.moment.toEpochMilli()))
                 it.setString(2, row.content)
                 it.setString(3, row.id)
                 it.execute()

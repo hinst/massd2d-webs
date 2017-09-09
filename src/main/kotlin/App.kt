@@ -1,5 +1,7 @@
 package hinst.massd2d.webs
 
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.async
 import org.jetbrains.ktor.application.ApplicationCall
 import org.jetbrains.ktor.application.install
 import org.jetbrains.ktor.content.files
@@ -11,6 +13,8 @@ import org.jetbrains.ktor.netty.Netty
 import org.jetbrains.ktor.response.respondText
 import org.jetbrains.ktor.routing.get
 import org.jetbrains.ktor.routing.routing
+import org.json.JSONObject
+import org.json.JSONString
 import java.io.File
 import java.io.FileInputStream
 import java.util.*
@@ -59,11 +63,19 @@ class App(val configFileName: String = "config-desktop.properties") {
         return text
     }
 
-    private suspend fun respondPage(call: ApplicationCall, pageName: String) {
-        call.respondText(getPage(pageName + ".html"), ContentType.Text.Html)
+    private fun respondPage(call: ApplicationCall, pageName: String) {
+        async(CommonPool) { call.respondText(getPage(pageName + ".html"), ContentType.Text.Html) }
     }
 
     private fun getCommitHistory(): String {
+        val row = commitHistoryMan.get()
+        if (row != null) {
+            val outerData = JSONObject(mapOf(
+                "history" to JSONObject(row.content),
+                    "latestUpdateMoment" to JSONString({-> ""})
+            ))
+        }
+
         val items = CommitHistory.loadFromBitbucket("hinst", bitBucketPassword, "massd2d")
         val text = CommitHistory.renderJson(items)
         return text

@@ -1,6 +1,7 @@
 package hinst.massd2d.webs
 
 import java.net.URLEncoder
+import java.time.Instant
 import java.util.*
 
 class CommitHistoryMan(
@@ -11,7 +12,7 @@ class CommitHistoryMan(
 ) {
     val log = org.slf4j.LoggerFactory.getLogger(this.javaClass)
     companion object {
-        const val initialUpdateInterval: Long = 30 * 1000
+        const val initialUpdateInterval: Long = 3 * 1000
         const val updateInterval: Long = 12 * 60 * 60 * 1000
     }
 
@@ -29,7 +30,7 @@ class CommitHistoryMan(
     fun update() {
         log.debug("update")
         val text = load()
-        val row = CommitHistoryDB.Row(rowId, Date(), text)
+        val row = CommitHistoryDB.Row(rowId, Instant.now(), text)
         db.commitHistory.put(row)
         log.debug("update->")
     }
@@ -43,8 +44,6 @@ class CommitHistoryMan(
     val rowId: String
         get() = URLEncoder.encode(userName, "UTF-8") + "/" + URLEncoder.encode(repoSlug, "UTF-8")
 
-    fun get() {
-        db.commitHistory.get(rowId)
-    }
+    fun get() = db.commitHistory.get(rowId)
 
 }
