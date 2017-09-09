@@ -42,5 +42,5 @@ document.getElementById("massd2d_webs_commitHistoryRefreshButton").addEventListe
 });
 document.getElementById("massd2d_webs_commitHistory_showSubInfoButton").addEventListener("click", function() {
     var panel = document.getElementById("massd2d_webs_commitHistory_subInfoPanel");
-    panel.style.display = checkIfDisplayed(panel) ? "none" : "block";
+    panel.style.display = massd2d_webs_checkIfDisplayed(panel) ? "none" : "block";
 });
