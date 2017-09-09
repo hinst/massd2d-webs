@@ -39,15 +39,14 @@ class App(val configFileName: String = "config-desktop.properties") {
                 get(webPath + "/") { respondPage(call,"hello") }
                 get(webPath + "/commitHistoryPage") { respondPage(call, "commitHistory") }
                 get(webPath + "/commitHistory") { call.respondText(getCommitHistory(), ContentType.Application.Json) }
-                static(webPath + "/web-3rd") {
-                    files(appMainPath + "/web-3rd")
+                fun setFiles(folder: String) {
+                    static(webPath + "/" + folder) {
+                        files(appMainPath + "/" + folder)
+                    }
                 }
-                static(webPath + "/src-js") {
-                    files(appMainPath + "/src-js")
-                }
-                static(webPath + "/src-style") {
-                    files(appMainPath + "/src-style")
-                }
+                setFiles("web-3rd")
+                setFiles("src-js")
+                setFiles("src-img")
                 get("/") {
                     call.respondText("URL outside root", ContentType.Text.Plain)
                 }

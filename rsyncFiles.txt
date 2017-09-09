@@ -4,6 +4,7 @@ src-web
 web-3rd
 src-template
 src-js
+src-img
 run.sh
 assuming-control.sh
 config-orange.properties
