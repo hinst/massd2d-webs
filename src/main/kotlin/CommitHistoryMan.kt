@@ -12,7 +12,7 @@ class CommitHistoryMan(
 ) {
     val log = org.slf4j.LoggerFactory.getLogger(this.javaClass)
     companion object {
-        const val initialUpdateInterval: Long = 3 * 1000
+        const val initialUpdateInterval: Long = 60 * 1000
         const val updateInterval: Long = 12 * 60 * 60 * 1000
     }
 

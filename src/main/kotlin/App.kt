@@ -1,7 +1,5 @@
 package hinst.massd2d.webs
 
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
 import org.jetbrains.ktor.application.ApplicationCall
 import org.jetbrains.ktor.application.install
 import org.jetbrains.ktor.content.files
@@ -15,7 +13,6 @@ import org.jetbrains.ktor.routing.get
 import org.jetbrains.ktor.routing.routing
 import org.json.JSONArray
 import org.json.JSONObject
-import org.json.JSONString
 import java.io.File
 import java.io.FileInputStream
 import java.util.*
@@ -71,11 +68,14 @@ class App(val configFileName: String = "config-desktop.properties") {
     }
 
     private fun getCommitHistory(): String {
+        var time = System.nanoTime()
         val row = commitHistoryMan.get()
+        time = System.nanoTime() - time
         if (row != null) {
             val outerData = JSONObject(mapOf(
                 "history" to JSONArray(row.content),
-                    "latestUpdateMoment" to row.moment.toEpochMilli())
+                    "latestUpdateMoment" to row.moment.toEpochMilli(),
+                    "readingTime" to time)
             )
             return outerData.toString()
         }
