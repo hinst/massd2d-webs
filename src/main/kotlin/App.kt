@@ -13,6 +13,7 @@ import org.jetbrains.ktor.netty.Netty
 import org.jetbrains.ktor.response.respondText
 import org.jetbrains.ktor.routing.get
 import org.jetbrains.ktor.routing.routing
+import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONString
 import java.io.File
@@ -29,8 +30,10 @@ class App(val configFileName: String = "config-desktop.properties") {
     private val bitBucketPassword
         get() = loadFileString(appMainPath + "/secret/hinst_bbp")
     private val commitHistoryMan = CommitHistoryMan(db = db, userName = "hinst", userPassword = bitBucketPassword, repoSlug = "massd2d")
+    val log = org.slf4j.LoggerFactory.getLogger(this.javaClass)
 
     fun run() {
+        log.debug(webPath)
         db.start()
         commitHistoryMan.start()
         val server = embeddedServer(Netty, 9001) {
@@ -63,22 +66,20 @@ class App(val configFileName: String = "config-desktop.properties") {
         return text
     }
 
-    private fun respondPage(call: ApplicationCall, pageName: String) {
-        async(CommonPool) { call.respondText(getPage(pageName + ".html"), ContentType.Text.Html) }
+    private suspend fun respondPage(call: ApplicationCall, pageName: String) {
+        call.respondText(getPage(pageName + ".html"), ContentType.Text.Html)
     }
 
     private fun getCommitHistory(): String {
         val row = commitHistoryMan.get()
         if (row != null) {
             val outerData = JSONObject(mapOf(
-                "history" to JSONObject(row.content),
-                    "latestUpdateMoment" to JSONString({-> ""})
-            ))
+                "history" to JSONArray(row.content),
+                    "latestUpdateMoment" to row.moment.toEpochMilli())
+            )
+            return outerData.toString()
         }
-
-        val items = CommitHistory.loadFromBitbucket("hinst", bitBucketPassword, "massd2d")
-        val text = CommitHistory.renderJson(items)
-        return text
+        return "null"
     }
 
     private fun replacePageVars(source: String): String {
