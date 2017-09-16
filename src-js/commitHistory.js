@@ -1,3 +1,4 @@
+/// <reference path="common.js"/>
 function massd2d_webs_displayCommitHistory(data) {
     var table = document.getElementById("massd2d_webs_commitHistoryTable");
     var rowTemplate = document.getElementById("massd2d_webs_commitHistoryRowTemplate").innerHTML;
@@ -8,7 +9,7 @@ function massd2d_webs_displayCommitHistory(data) {
             .replace(/\$message/, data[i].message);
         rowHtmls.push(rowHtml);
     }
-    table.innerHTML = rowHtmls.join();
+    table.innerHTML = rowHtmls.join("");
 };
 function massd2d_webs_receiveCommitHistory(data) {
     if (data) {
@@ -40,7 +41,13 @@ massd2d_webs_receiveCommitHistoryPageLoaded();
 document.getElementById("massd2d_webs_commitHistoryRefreshButton").addEventListener("click", function() {
     massd2d_webs_loadCommitHistory();
 });
-document.getElementById("massd2d_webs_commitHistory_showSubInfoButton").addEventListener("click", function() {
-    var panel = document.getElementById("massd2d_webs_commitHistory_subInfoPanel");
-    panel.style.display = massd2d_webs_checkIfDisplayed(panel) ? "none" : "block";
-});
+massd2d_webs_makeToggler(
+    document.getElementById("massd2d_webs_commitHistory_showSubInfoButton"),
+    document.getElementById("massd2d_webs_commitHistory_subInfoPanel"), 
+    "block"
+);
+massd2d_webs_makeToggler(
+    document.getElementById("massd2d_webs_commitHistory_showDescriptionButton"),
+    document.getElementById("massd2d_webs_commitHistory_descriptionPanel"), 
+    "block"
+);
