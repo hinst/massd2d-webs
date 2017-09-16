@@ -17,6 +17,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.io.FileInputStream
+import java.time.Instant
 import java.util.*
 
 class App(val configFileName: String = "config-desktop.properties") {
@@ -49,8 +50,8 @@ class App(val configFileName: String = "config-desktop.properties") {
                 setFiles("web-3rd")
                 setFiles("src-js")
                 setFiles("src-img")
-                static(webPath + "/game-files") {
-
+                get(webPath + "/game-files") {
+                    respondWithGameFile(call)
                 }
                 get("/") {
                     call.respondText("URL outside root", ContentType.Text.Plain)
@@ -103,7 +104,7 @@ class App(val configFileName: String = "config-desktop.properties") {
         val file = files.find { it.name == name }
         if (file != null) {
             call.respond(LocalFileContent(file))
-
+            db.accessHistory.put(AccessHistoryDB.Row(Instant.now(), file.name))
         }
     }
 }
