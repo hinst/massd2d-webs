@@ -104,9 +104,10 @@ class App(val configFileName: String = "config-desktop.properties") {
         val files = File(appMainPath + "/game-files").listFiles();
         val file = files.find { it.name == name }
         if (file != null) {
-            call.response.headers.append("filename", file.name)
+            val fileName = file.name
+            call.response.headers.append("Content-Disposition", "attachment; filename=\"$fileName\"")
             call.respond(LocalFileContent(file))
-            db.accessHistory.put(AccessHistoryDB.Row(Instant.now(), file.name))
+            db.accessHistory.put(AccessHistoryDB.Row(Instant.now(), fileName))
         }
     }
 }
