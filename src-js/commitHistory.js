@@ -20,7 +20,7 @@ function massd2d_webs_receiveCommitHistory(data) {
     }
     document.getElementById("massd2d_webs_commitHistoryTableLoading").style.display = "none";
     document.getElementById("massd2d_webs_commitHistoryTable").style.display = "block";
-}
+};
 function massd2d_webs_loadCommitHistory() {
     document.getElementById("massd2d_webs_commitHistoryTableLoading").style.display = "block";
     document.getElementById("massd2d_webs_commitHistoryTable").style.display = "none";
