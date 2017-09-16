@@ -2,13 +2,14 @@ package hinst.massd2d.webs
 
 import org.jetbrains.ktor.application.ApplicationCall
 import org.jetbrains.ktor.application.install
+import org.jetbrains.ktor.content.LocalFileContent
 import org.jetbrains.ktor.content.files
 import org.jetbrains.ktor.content.static
 import org.jetbrains.ktor.features.ConditionalHeaders
 import org.jetbrains.ktor.host.embeddedServer
 import org.jetbrains.ktor.http.ContentType
 import org.jetbrains.ktor.netty.Netty
-import org.jetbrains.ktor.pipeline.PipelinePhase
+import org.jetbrains.ktor.response.respond
 import org.jetbrains.ktor.response.respondText
 import org.jetbrains.ktor.routing.get
 import org.jetbrains.ktor.routing.routing
@@ -48,6 +49,9 @@ class App(val configFileName: String = "config-desktop.properties") {
                 setFiles("web-3rd")
                 setFiles("src-js")
                 setFiles("src-img")
+                static(webPath + "/game-files") {
+
+                }
                 get("/") {
                     call.respondText("URL outside root", ContentType.Text.Plain)
                 }
@@ -91,5 +95,15 @@ class App(val configFileName: String = "config-desktop.properties") {
                 text = text.replace(key, loadFileString(template.absolutePath))
         }}
         return text
+    }
+
+    suspend fun respondWithGameFile(call: ApplicationCall) {
+        val name = call.request.queryParameters["name"]
+        val files = File(appMainPath + "/game-files").listFiles();
+        val file = files.find { it.name == name }
+        if (file != null) {
+            call.respond(LocalFileContent(file))
+
+        }
     }
 }
