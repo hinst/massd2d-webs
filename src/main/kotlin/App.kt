@@ -41,6 +41,7 @@ class App(val configFileName: String = "config-desktop.properties") {
             routing {
                 get(webPath + "/") { respondPage(call, "hello") }
                 get(webPath + "/commitHistoryPage") { respondPage(call, "commitHistory") }
+                get(webPath + "/downloadPage") { respondPage(call, "download") }
                 get(webPath + "/commitHistory") { call.respondText(getCommitHistory(), ContentType.Application.Json) }
                 fun setFiles(folder: String) {
                     static(webPath + "/" + folder) {
@@ -103,6 +104,7 @@ class App(val configFileName: String = "config-desktop.properties") {
         val files = File(appMainPath + "/game-files").listFiles();
         val file = files.find { it.name == name }
         if (file != null) {
+            call.response.headers.append("filename", file.name)
             call.respond(LocalFileContent(file))
             db.accessHistory.put(AccessHistoryDB.Row(Instant.now(), file.name))
         }
