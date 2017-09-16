@@ -19,7 +19,6 @@ class AccessHistoryDB(val db: DB) {
             it.autoCommit = false
             val statement = "INSERT INTO $tableName(moment, `key`) VALUES(?, ?)"
             //                                      1       2           1  2
-            log.debug(statement)
             it.prepareStatement(statement).use {
                 it.setTimestamp(1, java.sql.Timestamp(row.moment.toEpochMilli()))
                 it.setString(2, row.key)
