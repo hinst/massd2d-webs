@@ -43,6 +43,11 @@ class App(val configFileName: String = "config-desktop.properties") {
                 get(webPath + "/commitHistoryPage") { respondPage(call, "commitHistory") }
                 get(webPath + "/downloadPage") { respondPage(call, "download") }
                 get(webPath + "/commitHistory") { call.respondText(getCommitHistory(), ContentType.Application.Json) }
+                get(webPath + "/accessHistorySum") {
+                    val key = call.request.queryParameters["key"]
+                    if (key != null)
+                        call.respondText(getAccessHistorySum(key).toString(), ContentType.Text.Plain)
+                }
                 fun setFiles(folder: String) {
                     static(webPath + "/" + folder) {
                         files(appMainPath + "/" + folder)
@@ -110,4 +115,9 @@ class App(val configFileName: String = "config-desktop.properties") {
             db.accessHistory.put(AccessHistoryDB.Row(Instant.now(), fileName))
         }
     }
+
+    fun getAccessHistorySum(key: String): Int {
+        return db.accessHistory.getSum(key)
+    }
+
 }

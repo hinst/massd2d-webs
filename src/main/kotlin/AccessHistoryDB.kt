@@ -28,4 +28,21 @@ class AccessHistoryDB(val db: DB) {
         }
     }
 
+    fun getSum(key: String): Int {
+        var result = 0
+        db.getConnection().use {
+            val statement = "SELECT COUNT(*) FROM $tableName WHERE `key`=?"
+            it.prepareStatement(statement).use {
+                it.setString(1, key)
+                it.executeQuery().use {
+                    while (it.next()) {
+                        result = it.getInt(1)
+                        break
+                    }
+                }
+            }
+        }
+        return result
+    }
+
 }

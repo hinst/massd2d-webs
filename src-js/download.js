@@ -1,5 +1,5 @@
 function massd2d_webs_getGameFileDownloadCount(fileName, targetElement) {
-    var url = massd2d_webs_AppPath + "/accessHistory?name=" + encodeURIComponent(fileName);
+    var url = massd2d_webs_AppPath + "/accessHistorySum?key=" + encodeURIComponent(fileName);
     fetch(url).then(
         function(response) {
             response.text().then(function(data) {
