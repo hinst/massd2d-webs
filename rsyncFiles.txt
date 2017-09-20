@@ -5,6 +5,7 @@ web-3rd
 src-template
 src-js
 src-img
+game-files
 run.sh
 assuming-control.sh
 config-orange.properties
