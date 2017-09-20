@@ -26,5 +26,5 @@ function massd2d_webs_makeDownloadGameFilePanel(fileName) {
     return panel;
 };
 document.getElementById("massd2d_webs_gameFiles").appendChild(
-    massd2d_webs_makeDownloadGameFilePanel("massd2d-2017.09.16.zip")
+    massd2d_webs_makeDownloadGameFilePanel("massd2d-2017.09.20.zip")
 );
