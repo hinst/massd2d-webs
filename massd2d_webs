@@ -1,0 +1,13 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          massd2d_webs
+# Required-Start:    $local_fs $network $named mysql
+# Required-Stop:     $local_fs $named mysql
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: massd2d_webs
+# Description:       massd2d_webs web app
+### END INIT INFO
+
+/sbin/runuser hinst -s /bin/bash -c "/bin/bash /home/hinst/ufd/App/massd2d-webs/assuming-control.sh $1"
